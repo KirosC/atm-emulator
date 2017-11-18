@@ -30,6 +30,7 @@ public class ATM {
 	private final int AUTH_FAIL = 1002;
 	int accountNo = 0;
 	int pin = 0;
+	public boolean buttonSwitch = true;
 
 	// create Button having atmHandler
 	protected JButton createButton(String buttonText) {
@@ -120,73 +121,72 @@ public class ATM {
 	public class ATMHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Object source = e.getSource();
-			if (source instanceof JButton) {
-				JButton btn = (JButton) source;
-				try {
-					switch (btn.getText()) {
-					case "ENT":
-						if (a.stepCounter == 0) {
-							enterAccountNo(NORMAL);
-						} else if (a.stepCounter == 1) {
-							inputValue = a.rText;
-							System.out.println(a.rText);
-							a.textField = null;
-							enterPassword();
-						} else if (a.stepCounter == 2) {
-							inputValue = a.rText;
-							System.out.println(a.rText);
-							a.passwordField = null;
-							authentication();
-						}
-						break;
-					case "CNL":
-						if (a.stepCounter == 1 || a.stepCounter == 2) { // Typing AccountNo OR PIN
-							theATMFrame.dispose();
-							run(); 
-							// Before Authentication success, it will back to Welcome Message if user press "CNL" 
-						} else if (a.stepCounter >= 4) {
-							String[] t = { "", "", "Sure to exit", "" };
-							a.displayOptionScreen(t, "Yes", "No");
-							a.stepCounter = 5;
-						}
-						break;
-					case "              ":
-						if (a.stepCounter == 4) { // Main Menu
-							if (e.getSource() == lbtn[0]) {
-								temp = new BalanceInquiry(currentAccountNo, bankDatabase, theATMFrame, a);
-								a.stepCounter = 11;
-								executeTransaction();
-							} else if (e.getSource() == lbtn[1]) {
-								temp = new Withdrawal(currentAccountNo, bankDatabase, cashDispenser, theATMFrame,a);
-								a.stepCounter = 21;
-								executeTransaction();
-							} else if (e.getSource() == lbtn[2]) {
-								temp = new Transfer(currentAccountNo, bankDatabase, theATMFrame, a);
-								a.stepCounter = 31;
-								executeTransaction();
-							} else if (e.getSource() == lbtn[3]) {
-								String[] t = { "", "", "Sure to exit", "" };
-								a.displayOptionScreen(t, "Yes", "No");
-								a.stepCounter++;
-							}
-						} else if (a.stepCounter == 5) { // Confirm EXIT
-							if (e.getSource() == lbtn[3]) {
-								currentAccountNo = 0;
-								theATMFrame.dispose();
-								run();
-							} else if (e.getSource() == rbtn[3]) {
-								a.mainMenu(currentAccountNo);
-							}
-						}
-						break;
+				Object source = e.getSource();
+				if (source instanceof JButton) {
+          JButton btn = (JButton) source;
+          try {
+            switch (btn.getText()) {
+            case "ENT":
+              if (a.stepCounter == 0) {
+                enterAccountNo(NORMAL);
+              } else if (a.stepCounter == 1) {
+                inputValue = a.rText;
+                System.out.println(a.rText);
+                a.textField = null;
+                enterPassword();
+              } else if (a.stepCounter == 2) {
+                inputValue = a.rText;
+                System.out.println(a.rText);
+                a.passwordField = null;
+                authentication();
+              }
+              break;
+            case "CNL":
+              if (a.stepCounter == 1 || a.stepCounter == 2) { // Typing AccountNo OR PIN
+                theATMFrame.dispose();
+                run();
+                // Before Authentication success, it will back to Welcome Message if user press "CNL"
+              } else if (a.stepCounter >= 4) {
+                String[] t = { "", "", "Sure to exit", "" };
+                a.displayOptionScreen(t, "Yes", "No");
+                a.stepCounter = 5;
+              }
+              break;
+            case "              ":
+              if (a.stepCounter == 4) { // Main Menu
+                if (e.getSource() == lbtn[0]) {
+                  temp = new BalanceInquiry(currentAccountNo, bankDatabase, theATMFrame, a);
+                  a.stepCounter = 11;
+                  executeTransaction();
+                } else if (e.getSource() == lbtn[1]) {
+                  temp = new Withdrawal(currentAccountNo, bankDatabase, cashDispenser, theATMFrame,a);
+                  a.stepCounter = 21;
+                  executeTransaction();
+                } else if (e.getSource() == lbtn[2]) {
+                  temp = new Transfer(currentAccountNo, bankDatabase, theATMFrame, a);
+                  a.stepCounter = 31;
+                  executeTransaction();
+                } else if (e.getSource() == lbtn[3]) {
+                  String[] t = { "", "", "Sure to exit", "" };
+                  a.displayOptionScreen(t, "Yes", "No");
+                  a.stepCounter++;
+                }
+              } else if (a.stepCounter == 5) { // Confirm EXIT
+                if (e.getSource() == lbtn[3]) {
+                  currentAccountNo = 0;
+                  theATMFrame.dispose();
+                  run();
+                } else if (e.getSource() == rbtn[3]) {
+                  a.mainMenu(currentAccountNo);
+                }
+              }
+              break;
 
-					}
-				} catch (Exception exp) {
-					exp.printStackTrace();
-				}
-			}
+            }
+          } catch (Exception exp) {
+            exp.printStackTrace();
+          }
+        }
 		}
 	}
-
 }

@@ -48,18 +48,18 @@ public class Transfer extends Transaction {
 			receivingAccount = Integer.parseInt(inputValue);
 			if (receivingAccount == userAccNum || !bankDatabase.checkAccountNum(receivingAccount)) {
 				if (receivingAccount == userAccNum) {
-					String[] transcationCnl = { "", "", "Account In Use.", "Transcation Cancelled." };
-					toMainMenu(transcationCnl);
+					String[] transactionCnl = { "", "", "Account In Use.", "Transcation Cancelled." };
+					toMainMenu(transactionCnl);
 				} else {
-					String[] transcationCnl = { "", "", "Account Not Found.", "Transcation Cancelled." };
-					toMainMenu(transcationCnl);
+					String[] transactionCnl = { "", "", "Account Not Found.", "Transcation Cancelled." };
+					toMainMenu(transactionCnl);
 				} // When user inputed something invalid
 			} else {
 				inputTransferAmt();
 			}
 		} catch (Exception e) {
-			String[] transcationCnl = { "", "", "Invalid Account Input.", "Transcation Cancelled." };
-			toMainMenu(transcationCnl);			
+			String[] transactionCnl = { "", "", "Invalid Account Input.", "Transcation Cancelled." };
+			toMainMenu(transactionCnl);
 		}
 	}
 
@@ -77,12 +77,12 @@ public class Transfer extends Transaction {
 					|| transferAmount > bankDatabase.getTotalBalance(userAccNum)) {
 				if (transferAmount * 100 - (int) (transferAmount * 100) != 0) {
 					// in case user input amount with 3 or more decimal place e.g. $1.521
-					String[] transcationCnl = { "", "", "Invalid Decimal Input.", "Transcation Cancelled." };
-					toMainMenu(transcationCnl);	
+					String[] transactionCnl = { "", "", "Invalid Decimal Input.", "Transcation Cancelled." };
+					toMainMenu(transactionCnl);
 				} else {
 					// in case user input amount that is larger than its account balance
-					String[] transcationCnl = { "", "", "Insufficient balance.", "Transcation Cancelled." };
-					toMainMenu(transcationCnl);	
+					String[] transactionCnl = { "", "", "Insufficient balance.", "Transcation Cancelled." };
+					toMainMenu(transactionCnl);
 				}
 			} else {
 				// Confirm Transfer Details
@@ -93,8 +93,8 @@ public class Transfer extends Transaction {
 				a.displayOptionScreen(details, "Back", "Next");
 			}
 		} catch (Exception e) {
-			String[] transcationCnl = { "", "", "Invalid Amount Input.", "Transcation Cancelled." };
-			toMainMenu(transcationCnl);	
+			String[] transactionCnl = { "", "", "Invalid Amount Input.", "Transcation Cancelled." };
+			toMainMenu(transactionCnl);
 		}
 	}
 

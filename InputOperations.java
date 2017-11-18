@@ -18,6 +18,10 @@ public class InputOperations extends JPanel {
 
 	public String rText;
 	public int stepCounter;
+	// 0-10 : ATM
+	// 11-20: BALANCE INQUIRY
+	// 21-30: WITHDRAWAL
+	// 31-40: TRANSFER
 
 
 
@@ -86,11 +90,15 @@ public class InputOperations extends JPanel {
 	public void removeENThandler(ActionListener handler) {
 		ent.removeActionListener(handler);
 	}
+	// Remove
+	// before execute transaction : atmhandler
+	// transaction end : ActionHandler of that transaction
 
+	// screen to show plain message, or message with input field
 	public JPanel displayScreen(String[] displayLine, boolean haveTextField, boolean havePasswordField) {
 		screen.removeAll();
 
-		screen.setLayout(new GridLayout(8, 1, 2, 2));
+		screen.setLayout(new GridLayout(8, 1, 2, 2)); // Total no. of message line avaliable = 8
 		screen.add(new JLabel(" "));
 		screen.add(new JLabel(" "));
 		for (int i = 0; i < displayLine.length; i++) {
@@ -103,7 +111,7 @@ public class InputOperations extends JPanel {
 		if (haveTextField) {
 			textField = new JTextField();
 			textField.setText("");
-			textField.setEditable(false);
+			textField.setEditable(false); // block keyboard input
 			textField.requestFocusInWindow();
 			textField.setHorizontalAlignment(JTextField.RIGHT);
 			// Set font type to "Consolas", font style to "BOLD", font size to "30"
@@ -113,7 +121,7 @@ public class InputOperations extends JPanel {
 			passwordField = new JPasswordField();
 			passwordField.setText(null);
 			passwordField.setEditable(false);
-			passwordField.setEchoChar('*');
+			passwordField.setEchoChar('*'); // character to hide password content
 			passwordField.requestFocusInWindow();
 			passwordField.setHorizontalAlignment(JPasswordField.RIGHT);
 			// Set font type to "Consolas", font style to "BOLD", font size to "30"
@@ -123,6 +131,7 @@ public class InputOperations extends JPanel {
 		return screen;
 	}
 
+	// Main Menu diplay details
 	public JPanel mainMenu(int accountNo) {
 		stepCounter = 4;
 		String[] displayLine = { "Welcome! " + accountNo, "Please choose a service.", " - VIEW MY BALANCE       ",
@@ -148,6 +157,7 @@ public class InputOperations extends JPanel {
 		return screen;
 	}
 
+	// Screen to show confirm message
 	public JPanel displayOptionScreen(String[] displayLine, String leftOption, String rightOption) {
 		screen.removeAll();
 
@@ -226,7 +236,7 @@ public class InputOperations extends JPanel {
 			Object source = e.getSource();
 			JButton btn = (JButton) source;
 			try {
-				switch (btn.getText()) { // get button text instead of create button name for number and "clear"
+				switch (btn.getText()) { // get button text
 				case "0":
 				case "1":
 				case "2":
@@ -241,7 +251,7 @@ public class InputOperations extends JPanel {
 				case ".":
 					String value = btn.getText();
 					if (textField != null) {
-						if (value.equals(".") && textField.getText().indexOf(".") != -1) {// more than one decimal point
+						if (value.equals(".") && textField.getText().indexOf(".") != -1) { // more than one decimal point
 							textField.setText(textField.getText());
 						} else {
 							textField.setText(textField.getText() + value);
@@ -253,7 +263,7 @@ public class InputOperations extends JPanel {
 						rText = String.valueOf(passwordField.getPassword());
 					}
 					break;
-				case "CLR":
+				case "CLR": // clear value
 					if (textField != null) {
 						textField.setText("");
 					} else if (passwordField != null) {

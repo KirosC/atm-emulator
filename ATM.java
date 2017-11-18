@@ -7,26 +7,31 @@ import javax.swing.*;
 public class ATM {
 	private CashDispenser cashDispenser;
 	private BankDatabase bankDatabase;
-	private String inputValue;
-	InputOperations a = new InputOperations();
-	ATMHandler atmHandler = new ATMHandler();
+	private String inputValue; // When "ENT" button is pressed, what user has typed on keypad will assign to inputValue
+	InputOperations a = new InputOperations(); // Includes all GUI functions need for this ATM
+	ATMHandler atmHandler = new ATMHandler(); // ActionListener of ATM
 
-	JFrame theATMFrame = new JFrame();
+	JFrame theATMFrame = new JFrame(); // a JFrame to store the ATM JFrame, it will be called by different Transaction. 
 	JButton[] rbtn = { createButton("              "), createButton("              "), createButton("              "), createButton("              ") };
 	JButton[] lbtn = { createButton("              "), createButton("              "), createButton("              "), createButton("              ") };
+	// side buttons l = left and r = right of the ATM
+	// Use array value instead of button text as all button text are the same
 
 	JButton enter = createButton("ENT");
 	JButton cancel = createButton("CNL");
+	// Different from Other Keys on the keypad, "ENT" and "CNL" performs different functions in different situation (controlled by stepCounter)
+	// "CNL" = EXIT function after authentication success
 
 	Transaction temp;
 
 	private int currentAccountNo;
-	private final	int NORMAL = 1000;
+	private final int NORMAL = 1000;
 	private final int INV_INPUT = 1001;
 	private final int AUTH_FAIL = 1002;
 	int accountNo = 0;
 	int pin = 0;
 
+	// create Button having atmHandler
 	protected JButton createButton(String buttonText) {
 		JButton btn = new JButton(buttonText);
 		btn.setFocusable(false);
@@ -96,7 +101,7 @@ public class ATM {
 		}
 	}
 
-	void performTransactions() {
+	void performTransactions() {	// show mainMenu
 		a.stepCounter = 4;
 		a.mainMenu(currentAccountNo);
 	}
@@ -138,7 +143,8 @@ public class ATM {
 					case "CNL":
 						if (a.stepCounter == 1 || a.stepCounter == 2) { // Typing AccountNo OR PIN
 							theATMFrame.dispose();
-							run();
+							run(); 
+							// Before Authentication success, it will back to Welcome Message if user press "CNL" 
 						} else if (a.stepCounter >= 4) {
 							String[] t = { "", "", "Sure to exit", "" };
 							a.displayOptionScreen(t, "Yes", "No");

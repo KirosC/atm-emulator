@@ -59,6 +59,8 @@ public abstract class Account
       return accountNumber;
    } // end method getAccountNumber
    
+   // New
+   // return what kind of Account it is (i.e. Current / Saving) 
    public abstract String getAccountType(); 
 } // end class Account
 

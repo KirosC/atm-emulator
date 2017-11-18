@@ -9,7 +9,7 @@ public class Transfer extends Transaction {
 	private int receivingAccount = 0;
 	private String inputValue;
 
-	private TransferHandler transferHandler = new TransferHandler();
+	private TransferHandler transferHandler = new TransferHandler(); // ActionListener of Transfer
 	private BankDatabase bankDatabase = getBankDatabase();
 	JButton[] lbtns = { createButton("              "), createButton("              "), createButton("              "), createButton("              ") };
 	JButton[] rbtns = { createButton("              "), createButton("              "), createButton("              "), createButton("              ") };
@@ -85,6 +85,7 @@ public class Transfer extends Transaction {
 					toMainMenu(transcationCnl);	
 				}
 			} else {
+				// Confirm Transfer Details
 				a.stepCounter = 36;
 				String[] details = { " ", "Transfer FROM: " + Integer.toString(userAccNum),
 						"Transfer TO:   " + Integer.toString(receivingAccount),
@@ -112,10 +113,12 @@ public class Transfer extends Transaction {
 			terminate(transcationF);		
 		} // end of checking
 	}
+
+	// Show message for a while and back to main menu
 	void toMainMenu(String[] msg) {
 		Timer t= new Timer(2000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	a.removeENThandler(transferHandler);
+            	a.removeENThandler(transferHandler); // This row can delete - same line exist in toMainMenu()
             	toMainMenu();
             }
         });
@@ -127,12 +130,14 @@ public class Transfer extends Transaction {
 		t.start();	
 	}
 	
+	// back to main menu now
 	void toMainMenu() {
 		a.removeENThandler(transferHandler);
 		theATMFrame.repaint();
 		a.mainMenu(getAccountNumber());
 	}
 	
+	// Show message for a while and terminate
 	void terminate(String[] msg) {
 		Timer t= new Timer(5000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -147,6 +152,7 @@ public class Transfer extends Transaction {
 		t.start();	
 	}
 	
+	// termianate now
 	void terminate() {
 		a.removeENThandler(transferHandler);
 		theATMFrame.repaint();
@@ -163,11 +169,11 @@ public class Transfer extends Transaction {
 					switch (btn.getText()) {
 					case "ENT":			
 						System.out.println(a.stepCounter);
-						if (a.stepCounter == 32) {
+						if (a.stepCounter == 32) { // InputTransferAccountNumber
 							inputValue = a.rText;
 							checkAcNo();
 							
-						} else if (a.stepCounter == 34) {
+						} else if (a.stepCounter == 34) { // InputTransferAmt
 							inputValue = a.rText;
 							checkTransferStatus();
 						}
@@ -176,16 +182,16 @@ public class Transfer extends Transaction {
 						if (a.stepCounter == 5) { // Confirm EXIT
 							if (e.getSource() == lbtns[3]) {
 								a.removeENThandler(transferHandler);
-								terminate();
+								terminate(); // Yes
 							} else if (e.getSource() == rbtns[3]) {
-								toMainMenu();
+								toMainMenu(); // No
 							}
 						}
-						if(a.stepCounter == 36) {
+						if(a.stepCounter == 36) { // checkTransferStatus
 							if (e.getSource() == lbtns[3]) {
-								toMainMenu();
+								toMainMenu(); // "Back"
 							}else if (e.getSource() == rbtns[3]) {
-								performTransfer();
+								performTransfer();  // "Next"
 							}
 						}
 						break;

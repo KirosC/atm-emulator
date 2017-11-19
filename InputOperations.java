@@ -95,7 +95,8 @@ public class InputOperations extends JPanel {
 	// transaction end : ActionHandler of that transaction
 
 	// screen to show plain message, or message with input field
-	public JPanel displayScreen(String[] displayLine, boolean haveTextField, boolean havePasswordField) {
+	public JPanel displayScreen(String[] displayLine, boolean haveTextField,
+			boolean havePasswordField) {
 		screen.removeAll();
 
 		screen.setLayout(new GridLayout(8, 1, 2, 2)); // Total no. of message line avaliable = 8
@@ -104,7 +105,12 @@ public class InputOperations extends JPanel {
 		for (int i = 0; i < displayLine.length; i++) {
 			JLabel log = new JLabel(displayLine[i]);
 			screen.add(log);
-			log.setHorizontalAlignment((int) CENTER_ALIGNMENT);
+			// Setup for Leave button
+			if (displayLine[i] != "Leave  ") {
+				log.setHorizontalAlignment((int) CENTER_ALIGNMENT);
+			} else {
+				log.setHorizontalAlignment(SwingConstants.RIGHT);
+			}
 			log.setFont(new Font("Consolas", Font.PLAIN, 18));
 		}
 

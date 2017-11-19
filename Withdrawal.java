@@ -28,6 +28,7 @@ public class Withdrawal extends Transaction {
 
 	public void execute() {
 		a.stepCounter = 21;
+		inputValue = null;
 		a.sideButton(lbtns, true);
 		a.sideButton(rbtns, false);
 		a.setENThandler(withdrawalHandler);
@@ -36,7 +37,9 @@ public class Withdrawal extends Transaction {
 
 	void dispenseAmount() {
 		a.stepCounter = 22;
-		String[] reqOnAmt = { "", "Amount to withdraw", "", "" };
+		String[] reqOnAmt = { "", "Amount to withdraw", "", "Leave  " };
+		a.sideButton(lbtns, true);
+		a.sideButton(rbtns, false);
 		a.displayScreen(reqOnAmt, true, false);
 	}
 
@@ -46,21 +49,22 @@ public class Withdrawal extends Transaction {
 			amount = Integer.parseInt(inputValue);
 			// Compare the withdrawal amount with balance
 			if (amount > super.getBankDatabase().getAvailableBalance(getAccountNumber())) {
-				String[] transactionCnl = {"", "", "Insufficient Balance.", "Transcation Cancelled."};
+				String[] transactionCnl = {"", "", "Insufficient Balance.", "Transaction Cancelled."};
 				toMainMenu(transactionCnl);
 			}
-			else if (!cashDispenser.isSufficientCashAvailable(amount)){
-				String[] transactionCnl = {"", "Insufficient Bill To Dispense.", "Please try a lower amount or use another ATM.", "", "Transcation Cancelled."};
+			else if (!cashDispenser.isSufficientCashAvailable(amount) && amount > 0){
+				String[] transactionCnl = {"", "Insufficient Bill To Dispense.", "Please try a lower amount or use another ATM.", "", "Transaction Cancelled."};
 				toMainMenu(transactionCnl);
-			}else if (amount % 100 == 0) {
+				// Invalid amount check
+			}else if (amount % 100 == 0 && amount > 0) {
 				String[] details = {" ", " ", "Withdraw $ " + amount, "Sure ?"};
 				a.displayOptionScreen(details, "No", "Yes");
 			} else {
-				String[] transactionCnl = {"", "", "Indispensible amount.", "Transcation Cancelled."};
+				String[] transactionCnl = {"", "", "Indispensable amount.", "Transaction Cancelled."};
 				toMainMenu(transactionCnl);
 			}
 		} catch (Exception e) {
-			String[] transactionCnl = {"", "", "Invalid Amount Input.", "Transcation Cancelled."};
+			String[] transactionCnl = {"", "", "Invalid Amount Input.", "Transaction Cancelled."};
 			toMainMenu(transactionCnl);
 		}
 	}
@@ -69,11 +73,11 @@ public class Withdrawal extends Transaction {
 		// Reset step counter
 		a.stepCounter = -1;
 		// Set delay for dispensing cash
-		Timer timer = new Timer(3000, new ActionListener() {
+		Timer timer = new Timer(1500, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cashDispenser.dispenseCash(amount);
-				String[] transactionCnl = { "", "Withdrawed $ " + amount, "Please take your money.","Exiting ..."};
+				String[] transactionCnl = { "", "Withdrew $ " + amount, "Please take your money.","Exiting ..."};
 				terminate(transactionCnl);
 			}
 		});
@@ -138,7 +142,7 @@ public class Withdrawal extends Transaction {
             switch (btn.getText()) {
             case "ENT":
               if (a.stepCounter == 22) {
-                inputValue = a.rText;
+								inputValue = a.rText;
                 confirmMessage();
               }
             case "              ":
@@ -151,6 +155,12 @@ public class Withdrawal extends Transaction {
                   a.mainMenu(getAccountNumber());
                 }
               }
+              if(a.stepCounter == 22){
+								if (e.getSource() == rbtns[2]){ // Return main menu from Withdrawal
+									String[] transactionCnl = { "", "", "", "Transaction Cancelled." };
+									toMainMenu(transactionCnl);
+								}
+							}
               if (a.stepCounter == 23) {
                 if (e.getSource() == lbtns[3]) {
                   toMainMenu();

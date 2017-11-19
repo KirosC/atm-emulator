@@ -37,7 +37,7 @@ public class Transfer extends Transaction {
 
 	private void inputTransferAccountNo() {
 		a.stepCounter = 32;
-		String[] reqOnTAccount = { "Transfer Account No.", "", "", "" };
+		String[] reqOnTAccount = { "Transfer Account No.", "", "", "Leave  " };
 		a.displayScreen(reqOnTAccount, true, false);
 	}
 
@@ -48,24 +48,24 @@ public class Transfer extends Transaction {
 			receivingAccount = Integer.parseInt(inputValue);
 			if (receivingAccount == userAccNum || !bankDatabase.checkAccountNum(receivingAccount)) {
 				if (receivingAccount == userAccNum) {
-					String[] transactionCnl = { "", "", "Account In Use.", "Transcation Cancelled." };
+					String[] transactionCnl = { "", "", "Account In Use.", "Transaction Cancelled." };
 					toMainMenu(transactionCnl);
 				} else {
-					String[] transactionCnl = { "", "", "Account Not Found.", "Transcation Cancelled." };
+					String[] transactionCnl = { "", "", "Account Not Found.", "Transaction Cancelled." };
 					toMainMenu(transactionCnl);
 				} // When user inputed something invalid
 			} else {
 				inputTransferAmt();
 			}
 		} catch (Exception e) {
-			String[] transactionCnl = { "", "", "Invalid Account Input.", "Transcation Cancelled." };
+			String[] transactionCnl = { "", "", "Invalid Account Input.", "Transaction Cancelled." };
 			toMainMenu(transactionCnl);
 		}
 	}
 
 	private void inputTransferAmt() {
 		a.stepCounter = 34;
-		String[] reqOnTAmt = { "Transfer Amount", "", "", "" };
+		String[] reqOnTAmt = { "Transfer Amount", "", "", "Leave  " };
 		a.displayScreen(reqOnTAmt, true, false);
 	}
 
@@ -77,11 +77,11 @@ public class Transfer extends Transaction {
 					|| transferAmount > bankDatabase.getTotalBalance(userAccNum)) {
 				if (transferAmount * 100 - (int) (transferAmount * 100) != 0) {
 					// in case user input amount with 3 or more decimal place e.g. $1.521
-					String[] transactionCnl = { "", "", "Invalid Decimal Input.", "Transcation Cancelled." };
+					String[] transactionCnl = { "", "", "Invalid Decimal Input.", "Transaction Cancelled." };
 					toMainMenu(transactionCnl);
 				} else {
 					// in case user input amount that is larger than its account balance
-					String[] transactionCnl = { "", "", "Insufficient balance.", "Transcation Cancelled." };
+					String[] transactionCnl = { "", "", "Insufficient Balance.", "Transaction Cancelled." };
 					toMainMenu(transactionCnl);
 				}
 			} else {
@@ -93,7 +93,7 @@ public class Transfer extends Transaction {
 				a.displayOptionScreen(details, "Back", "Next");
 			}
 		} catch (Exception e) {
-			String[] transactionCnl = { "", "", "Invalid Amount Input.", "Transcation Cancelled." };
+			String[] transactionCnl = { "", "", "Invalid Amount Input.", "Transaction Cancelled." };
 			toMainMenu(transactionCnl);
 		}
 	}
@@ -106,17 +106,17 @@ public class Transfer extends Transaction {
 		// check if the transfer is successful or not
 		boolean transferSuccess = true; // Assuming the transfer wont fail
 		if (transferSuccess) {
-			String[] transcationS = { "", "",  "Transcation Success." ,"Exiting ..."};
-			terminate(transcationS);	
+			String[] TransactionS = { "", "",  "Transaction Success." ,"Exiting ..."};
+			terminate(TransactionS);
 		} else {
-			String[] transcationF = { "", "", "Transcation Failed." , ""};
-			terminate(transcationF);		
+			String[] TransactionF = { "", "", "Transaction Failed." , ""};
+			terminate(TransactionF);
 		} // end of checking
 	}
 
 	// Show message for a while and back to main menu
 	void toMainMenu(String[] msg) {
-		Timer t= new Timer(2000, new ActionListener() {
+		Timer t= new Timer(1500, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	a.removeENThandler(transferHandler); // This row can delete - same line exist in toMainMenu()
             	toMainMenu();
@@ -172,7 +172,6 @@ public class Transfer extends Transaction {
 						if (a.stepCounter == 32) { // InputTransferAccountNumber
 							inputValue = a.rText;
 							checkAcNo();
-							
 						} else if (a.stepCounter == 34) { // InputTransferAmt
 							inputValue = a.rText;
 							checkTransferStatus();
@@ -185,6 +184,12 @@ public class Transfer extends Transaction {
 								terminate(); // Yes
 							} else if (e.getSource() == rbtns[3]) {
 								toMainMenu(); // No
+							}
+						}
+						if(a.stepCounter == 32 || a.stepCounter == 34) {
+							if (e.getSource() == rbtns[2]) { // Return main menu from Transfer
+								String[] transactionCnl = { "", "", "", "Transaction Cancelled." };
+								toMainMenu(transactionCnl);
 							}
 						}
 						if(a.stepCounter == 36) { // checkTransferStatus

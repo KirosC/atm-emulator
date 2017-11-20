@@ -164,9 +164,10 @@ public class Withdrawal extends Transaction {
 										public void actionPerformed(ActionEvent e) {
 											theATMFrame.dispose();
 											ATMCaseStudy.main(null);
+											theATMFrame.toFront();
 										}
 									});
-									String[] cardReminder = {"", "", "Please take your card first.", ""};
+									String[] cardReminder = {"", "", "Please take your card.", ""};
 									a.displayScreen(cardReminder, false, false);
 									theATMFrame.repaint();
 									timer.setRepeats(false);
@@ -193,7 +194,8 @@ public class Withdrawal extends Transaction {
 							}
 							if (a.stepCounter == 23) {
                 if (e.getSource() == lbtns[3]) {
-                  toMainMenu();
+									String[] transactionCnl = {"", "", "Transaction Cancelled.", ""};
+									toMainMenu(transactionCnl);
                 } else if (e.getSource() == rbtns[3]) {
                   dispense();
                 }

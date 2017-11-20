@@ -60,7 +60,7 @@ public class BalanceInquiry extends Transaction {
 							ATMCaseStudy.main(null);
 						}
 					});
-					String[] cardReminder = {"", "", "Please take your card first.", ""};
+					String[] cardReminder = {"", "", "Please take your card.", ""};
 					a.displayScreen(cardReminder, false, false);
 					theATMFrame.repaint();
 					timer.setRepeats(false);

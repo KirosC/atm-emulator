@@ -51,6 +51,7 @@ public class ATM {
 		a.setSideBtnArr(lbtn, rbtn);
 		String[] t = { "","","Welcome to the ATM System", "Press ENT to continue." };
 		theATMFrame = a.mainFrame(enter, cancel, t, lbtn, rbtn);
+		theATMFrame.toFront();
 	}
 
 	void enterAccountNo(int displayMode) {
@@ -115,6 +116,7 @@ public class ATM {
 		theATMFrame.dispose();
 		JOptionPane.showMessageDialog(null, "Goodbye");
 		run();
+		theATMFrame.toFront();
 	}
 
 	public class ATMHandler implements ActionListener {
@@ -148,9 +150,10 @@ public class ATM {
 									public void actionPerformed(ActionEvent e) {
 										theATMFrame.dispose();
 										run();
+										theATMFrame.toFront();
 									}
 								});
-								String[] cardReminder = {"", "", "Please take your card first.", ""};
+								String[] cardReminder = {"", "", "Please take your card.", ""};
 								a.displayScreen(cardReminder, false, false);
 								theATMFrame.repaint();
 								timer.setRepeats(false);
@@ -183,15 +186,18 @@ public class ATM {
                 }
               } else if (a.stepCounter == 5) { // Confirm EXIT
                 if (e.getSource() == lbtn[3]) {
+									// Reset step counter
+									a.stepCounter = -1;
                   currentAccountNo = 0;
 									Timer timer = new Timer(2000, new ActionListener() {
 										@Override
 										public void actionPerformed(ActionEvent e) {
 											theATMFrame.dispose();
 											run();
+											theATMFrame.toFront();
 										}
 									});
-									String[] cardReminder = {"", "", "Please take your card first.", ""};
+									String[] cardReminder = {"", "", "Please take your card.", ""};
 									a.displayScreen(cardReminder, false, false);
 									theATMFrame.repaint();
 									timer.setRepeats(false);
@@ -201,7 +207,6 @@ public class ATM {
                 }
               }
               break;
-
             }
           } catch (Exception exp) {
             exp.printStackTrace();

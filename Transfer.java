@@ -90,7 +90,7 @@ public class Transfer extends Transaction {
 				String[] details = { " ", "Transfer FROM: " + Integer.toString(userAccNum),
 						"Transfer TO:   " + Integer.toString(receivingAccount),
 						"Amount:     " + "$ " + Double.toString(transferAmount) + "0" };
-				a.displayOptionScreen(details, "Back", "Next");
+				a.displayOptionScreen(details, "Back", "Transfer");
 			}
 		} catch (Exception e) {
 			String[] transactionCnl = { "", "", "Invalid Amount Input.", "Transaction Cancelled." };
@@ -99,17 +99,18 @@ public class Transfer extends Transaction {
 	}
 
 	void performTransfer() {
-		a.stepCounter = 37;
+		// Reset step counter
+		a.stepCounter = -1;
 		bankDatabase.debit(userAccNum, transferAmount);
 		bankDatabase.credit(receivingAccount, transferAmount);
 		// end of transferring the money
 		// check if the transfer is successful or not
 		boolean transferSuccess = true; // Assuming the transfer wont fail
 		if (transferSuccess) {
-			String[] TransactionS = { "", "",  "Transaction Success." ,"Exiting ..."};
+			String[] TransactionS = { "", "Transaction Success.",  "Pleas take your card." ,"Exiting ..."};
 			terminate(TransactionS);
 		} else {
-			String[] TransactionF = { "", "", "Transaction Failed." , ""};
+			String[] TransactionF = { "", "Transaction Failed.", "Pleas take your card." , ""};
 			terminate(TransactionF);
 		} // end of checking
 	}
@@ -187,7 +188,7 @@ public class Transfer extends Transaction {
 										terminate(); // Yes
 									}
 								});
-								String[] cardReminder = {"", "", "Please take your card first.", ""};
+								String[] cardReminder = {"", "", "Please take your card", ""};
 								a.displayScreen(cardReminder, false, false);
 								theATMFrame.repaint();
 								timer.setRepeats(false);

@@ -168,8 +168,7 @@ public class Transfer extends Transaction {
 				JButton btn = (JButton) source;
 				try {
 					switch (btn.getText()) {
-					case "ENT":			
-						System.out.println(a.stepCounter);
+					case "ENT":
 						if (a.stepCounter == 32) { // InputTransferAccountNumber
 							inputValue = a.rText;
 							checkAcNo();

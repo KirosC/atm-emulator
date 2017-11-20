@@ -86,7 +86,7 @@ public class Withdrawal extends Transaction {
 
 		// Debit the account balance and eject the card
 		getBankDatabase().debit(getAccountNumber(), amount);
-		String[] cardReminder = {"", "", "Please take your card first.", ""};
+		String[] cardReminder = {"", "Transaction Success.", "Please take your card first.", ""};
 		theATMFrame.repaint();
 		a.displayScreen(cardReminder, false, false);
 		timer.setRepeats(false);

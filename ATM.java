@@ -129,12 +129,10 @@ public class ATM {
                 enterAccountNo(NORMAL);
               } else if (a.stepCounter == 1) {
                 inputValue = a.rText;
-                System.out.println(a.rText);
                 a.textField = null;
                 enterPassword();
               } else if (a.stepCounter == 2) {
                 inputValue = a.rText;
-                System.out.println(a.rText);
                 a.passwordField = null;
                 authentication();
               }

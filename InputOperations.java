@@ -9,7 +9,6 @@ public class InputOperations extends JPanel {
 	JPasswordField passwordField;
 	JFrame a;
 	JPanel screen = new JPanel();
-	JPanel previousScreen = new JPanel();
 	JPanel leftBtns = new JPanel();
 	JPanel rightBtns = new JPanel();
 	JButton[] left;
@@ -99,10 +98,10 @@ public class InputOperations extends JPanel {
 			boolean havePasswordField) {
 		screen.removeAll();
 
-		screen.setLayout(new GridLayout(8, 1, 2, 2)); // Total no. of message line avaliable = 8
+		screen.setLayout(new GridLayout(8, 1, 2, 2));
 		screen.add(new JLabel(" "));
 		screen.add(new JLabel(" "));
-		for (int i = 0; i < displayLine.length; i++) {
+		for (int i = 0; i < displayLine.length; i++) {  // Total no. of message line avaliable = 5
 			JLabel log = new JLabel(displayLine[i]);
 			screen.add(log);
 			// Setup for Leave button

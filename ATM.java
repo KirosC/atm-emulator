@@ -56,15 +56,19 @@ public class ATM {
 
 	void enterAccountNo(int displayMode) {
 		a.stepCounter = 1;
-		String[] t = { "","Please enter your Account No", "", "" };
+		String[] t = { "","Please enter your Account No.", "", "" };
 
 		switch (displayMode){
 			case INV_INPUT:{
+				// t[1] = "Invalid input";
+				// t[2] = "Please re-enter your Account No.";
 				t[2] = "Invalid input";
 				t[3] = "Please try again";
 				break;
 			}
 			case AUTH_FAIL:{
+				// t[1] = "Authentication Failed.";
+				// t[2] = "Please re-enter your Account No.";
 				t[2] = "Authentication Failed";
 				break;
 			}
@@ -74,6 +78,7 @@ public class ATM {
 	}
 
 	void enterPassword() {
+		// allow retry ?
 		a.stepCounter = 2;
 		try {
 			accountNo = Integer.parseInt(inputValue);
@@ -109,14 +114,6 @@ public class ATM {
 
 	void executeTransaction() {
 		temp.execute();
-	}
-
-	void terminate() {
-		currentAccountNo = 0;
-		theATMFrame.dispose();
-		JOptionPane.showMessageDialog(null, "Goodbye");
-		run();
-		theATMFrame.toFront();
 	}
 
 	public class ATMHandler implements ActionListener {

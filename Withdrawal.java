@@ -79,7 +79,7 @@ public class Withdrawal extends Transaction {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cashDispenser.dispenseCash(amount);
-				String[] transactionCnl = { "", "Withdrew $ " + amount, "Please take your money.","Exiting ..."};
+				String[] transactionCnl = { "", "Withdraw $ " + amount, "Please take your money.","Exiting ..."};
 				terminate(transactionCnl);
 			}
 		});

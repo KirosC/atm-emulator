@@ -106,7 +106,9 @@ public class InputOperations extends JPanel {
 			JLabel log = new JLabel(displayLine[i]);
 			screen.add(log);
 			// Setup for Leave button
-			if (displayLine[i] != "Leave  ") {
+			if (displayLine[i] != "Leave  "
+					&& displayLine[i] != "  $100                                    $300  "
+					&& displayLine[i] != "  $500                                   $1000  ") {
 				log.setHorizontalAlignment((int) CENTER_ALIGNMENT);
 			} else {
 				log.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -208,15 +210,15 @@ public class InputOperations extends JPanel {
 		for (int number = 1; number < 10; number++) {
 			keypad.add(createButton(String.valueOf(number)));
 			switch (number) {
-			case 3:
-				keypad.add(clear);
-				break;
-			case 6:
-				keypad.add(cancel);
-				break;
-			case 9:
-				keypad.add(new JLabel(" "));
-				break;
+				case 3:
+					keypad.add(clear);
+					break;
+				case 6:
+					keypad.add(cancel);
+					break;
+				case 9:
+					keypad.add(new JLabel(" "));
+					break;
 			}
 		}
 		keypad.add(createButton("."));
@@ -243,40 +245,40 @@ public class InputOperations extends JPanel {
 			JButton btn = (JButton) source;
 			try {
 				switch (btn.getText()) { // get button text
-				case "0":
-				case "1":
-				case "2":
-				case "3":
-				case "4":
-				case "5":
-				case "6":
-				case "7":
-				case "8":
-				case "9":
-				case "00":
-				case ".":
-					String value = btn.getText();
-					if (textField != null) {
-						if (value.equals(".") && textField.getText().indexOf(".") != -1) { // more than one decimal point
-							textField.setText(textField.getText());
-						} else {
-							textField.setText(textField.getText() + value);
+					case "0":
+					case "1":
+					case "2":
+					case "3":
+					case "4":
+					case "5":
+					case "6":
+					case "7":
+					case "8":
+					case "9":
+					case "00":
+					case ".":
+						String value = btn.getText();
+						if (textField != null) {
+							if (value.equals(".") && textField.getText().indexOf(".") != -1) { // more than one decimal point
+								textField.setText(textField.getText());
+							} else {
+								textField.setText(textField.getText() + value);
+							}
+							rText = textField.getText();
+						} else if (passwordField != null) {
+							char[] input = passwordField.getPassword();
+							passwordField.setText(String.valueOf(input) + value);
+							rText = String.valueOf(passwordField.getPassword());
 						}
-						rText = textField.getText();
-					} else if (passwordField != null) {
-						char[] input = passwordField.getPassword();
-						passwordField.setText(String.valueOf(input) + value);
-						rText = String.valueOf(passwordField.getPassword());
-					}
-					break;
-				case "CLR": // clear value
-					if (textField != null) {
-						textField.setText("");
-					} else if (passwordField != null) {
-						passwordField.setText("");
-					}
-					rText = "";
-					break;
+						break;
+					case "CLR": // clear value
+						if (textField != null) {
+							textField.setText("");
+						} else if (passwordField != null) {
+							passwordField.setText("");
+						}
+						rText = "";
+						break;
 				}
 			} catch (Exception exp) {
 				exp.printStackTrace();
@@ -284,3 +286,6 @@ public class InputOperations extends JPanel {
 		}
 	}
 }
+
+
+

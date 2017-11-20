@@ -37,7 +37,9 @@ public class Withdrawal extends Transaction {
 
 	void dispenseAmount() {
 		a.stepCounter = 22;
-		String[] reqOnAmt = { "Amount to withdraw", "", "", "Leave  " };
+		String[] reqOnAmt = {"Amount to withdraw", "  $100                                   $300  ",
+				"  $500                                  $1000  ",
+				"Leave  "};
 		a.sideButton(lbtns, true);
 		a.sideButton(rbtns, false);
 		a.displayScreen(reqOnAmt, true, false);
@@ -130,6 +132,16 @@ public class Withdrawal extends Transaction {
 		ATMCaseStudy.main(null);
 	}
 
+	private void withdrawCash() {
+		inputValue = a.rText;
+		confirmMessage();
+	}
+
+	private void withdrawCash(String amount) {
+		inputValue = amount;
+		confirmMessage();
+	}
+
 	public class WithdrawalHandler implements ActionListener {
 
 		@Override
@@ -142,8 +154,7 @@ public class Withdrawal extends Transaction {
             switch (btn.getText()) {
             case "ENT":
               if (a.stepCounter == 22) {
-								inputValue = a.rText;
-                confirmMessage();
+								withdrawCash();
               }
             case "              ":
               if (a.stepCounter == 5) { // Confirm EXIT
@@ -165,13 +176,22 @@ public class Withdrawal extends Transaction {
                   a.mainMenu(getAccountNumber());
                 }
               }
-              if(a.stepCounter == 22){
-								if (e.getSource() == rbtns[2]){ // Return main menu from Withdrawal
-									String[] transactionCnl = { "", "", "", "Transaction Cancelled." };
+							if (a.stepCounter == 22) {
+								if (e.getSource() == rbtns[2]) { // Return main menu from Withdrawal
+									String[] transactionCnl = {"", "", "Transaction Cancelled.", ""};
 									toMainMenu(transactionCnl);
+								} else if (e.getSource()
+										== lbtns[0]) { // Withdraw provided amount of cash on screen
+									withdrawCash("100");
+								} else if (e.getSource() == lbtns[1]) {
+									withdrawCash("500");
+								} else if (e.getSource() == rbtns[0]) {
+									withdrawCash("300");
+								} else if (e.getSource() == rbtns[1]) {
+									withdrawCash("1000");
 								}
 							}
-              if (a.stepCounter == 23) {
+							if (a.stepCounter == 23) {
                 if (e.getSource() == lbtns[3]) {
                   toMainMenu();
                 } else if (e.getSource() == rbtns[3]) {

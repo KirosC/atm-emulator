@@ -198,7 +198,7 @@ public class Transfer extends Transaction {
 						}
 						if(a.stepCounter == 32 || a.stepCounter == 34) {
 							if (e.getSource() == rbtns[2]) { // Return main menu from Transfer
-								String[] transactionCnl = { "", "", "", "Transaction Cancelled." };
+								String[] transactionCnl = { "", "", "Transaction Cancelled.", "" };
 								toMainMenu(transactionCnl);
 							}
 						}

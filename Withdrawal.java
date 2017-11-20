@@ -37,12 +37,10 @@ public class Withdrawal extends Transaction {
 
 	void dispenseAmount() {
 		a.stepCounter = 22;
-		String[] reqOnAmt = {"Amount to withdraw", "  $100                                   $300  ",
-				"  $500                                  $1000  ",
-				"Leave  "};
+		String[] reqOnAmt = {"Amount to withdraw", "", "", "Leave  "};
 		a.sideButton(lbtns, true);
 		a.sideButton(rbtns, false);
-		a.displayScreen(reqOnAmt, true, false);
+		a.displayScreen(reqOnAmt, true, false, true);
 	}
 
 	void confirmMessage() {
@@ -88,7 +86,7 @@ public class Withdrawal extends Transaction {
 		getBankDatabase().debit(getAccountNumber(), amount);
 		String[] cardReminder = {"", "Transaction Success.", "Please take your card first.", ""};
 		theATMFrame.repaint();
-		a.displayScreen(cardReminder, false, false);
+		a.displayScreen(cardReminder, false, false, false);
 		timer.setRepeats(false);
 		timer.start();
 	}
@@ -100,7 +98,7 @@ public class Withdrawal extends Transaction {
             }
         });
 		theATMFrame.repaint();
-		a.displayScreen(msg, false, false);
+		a.displayScreen(msg, false, false, false);
 		
 		t.setRepeats(false);
 		t.start();	
@@ -120,7 +118,7 @@ public class Withdrawal extends Transaction {
         });
 		
 		theATMFrame.repaint();
-		a.displayScreen(msg, false, false);
+		a.displayScreen(msg, false, false, false);
 		
 		t.setRepeats(false);
 		t.start();	
@@ -168,7 +166,7 @@ public class Withdrawal extends Transaction {
 										}
 									});
 									String[] cardReminder = {"", "", "Please take your card.", ""};
-									a.displayScreen(cardReminder, false, false);
+									a.displayScreen(cardReminder, false, false, false);
 									theATMFrame.repaint();
 									timer.setRepeats(false);
 									timer.start();

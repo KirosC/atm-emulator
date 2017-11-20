@@ -74,7 +74,7 @@ public class ATM {
 			}
 			default:
 		}
-		a.displayScreen(t, true, false);
+		a.displayScreen(t, true, false, false);
 	}
 
 	void enterPassword() {
@@ -83,7 +83,7 @@ public class ATM {
 		try {
 			accountNo = Integer.parseInt(inputValue);
 			String[] t = { "","Please enter PIN Code", "", "" };
-			a.displayScreen(t, false, true);
+			a.displayScreen(t, false, true, false);
 		} catch (Exception e) {
 			System.out.println("Fail to change Integer Value.");
 			enterAccountNo(INV_INPUT);
@@ -149,7 +149,7 @@ public class ATM {
 									}
 								});
 								String[] cardReminder = {"", "", "Please take your card.", ""};
-								a.displayScreen(cardReminder, false, false);
+								a.displayScreen(cardReminder, false, false, false);
 								theATMFrame.repaint();
 								timer.setRepeats(false);
 								timer.start();
@@ -193,7 +193,7 @@ public class ATM {
 										}
 									});
 									String[] cardReminder = {"", "", "Please take your card.", ""};
-									a.displayScreen(cardReminder, false, false);
+									a.displayScreen(cardReminder, false, false, false);
 									theATMFrame.repaint();
 									timer.setRepeats(false);
 									timer.start();

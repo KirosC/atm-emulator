@@ -33,11 +33,11 @@ public class InputOperations extends JPanel {
 		a.add(leftBtns, BorderLayout.WEST);
 		a.add(rightBtns, BorderLayout.EAST);
 
-		screen = displayScreen(displayLine, false, false);
+		screen = displayScreen(displayLine, false, false, false);
 		a.add(screen, BorderLayout.CENTER);
 		ent = enter;
 
-		// Get screen ressolution
+		// Get screen resolution
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double screenWidth = screenSize.getWidth();
 		double screenHeight = screenSize.getHeight();
@@ -95,19 +95,39 @@ public class InputOperations extends JPanel {
 
 	// screen to show plain message, or message with input field
 	public JPanel displayScreen(String[] displayLine, boolean haveTextField,
-			boolean havePasswordField) {
+			boolean havePasswordField, boolean haveCashButton) {
 		screen.removeAll();
 
 		screen.setLayout(new GridLayout(8, 1, 2, 2));
 		screen.add(new JLabel(" "));
 		screen.add(new JLabel(" "));
-		for (int i = 0; i < displayLine.length; i++) {  // Total no. of message line avaliable = 5
+		for (int i = 0; i < displayLine.length; i++) {  // Total no. of message line available = 5
 			JLabel log = new JLabel(displayLine[i]);
-			screen.add(log);
+			// Setup for cash amount button
+			if(haveCashButton && i != 0 && i != 3){
+				JLabel jLabel;
+				JLabel jLabel1;
+				JPanel jPanel = new JPanel();
+				// A new BorderLayout for each row
+				jPanel.setLayout(new BorderLayout());
+				if(i == 1) {
+					jLabel = new JLabel("  $100");
+					jLabel1 = new JLabel("$300  ");
+				}else {
+					jLabel = new JLabel("  $500");
+					jLabel1 = new JLabel("$1000  ");
+				}
+				jLabel.setFont(new Font("Consolas", Font.PLAIN, 18));
+				jLabel1.setFont(new Font("Consolas", Font.PLAIN, 18));
+				jPanel.add(jLabel, BorderLayout.WEST);
+				jPanel.add(jLabel1, BorderLayout.EAST);
+				screen.add(jPanel);
+			}
+			else{
+				screen.add(log);
+			}
 			// Setup for Leave button
-			if (displayLine[i] != "Leave  "
-					&& displayLine[i] != "  $100                                    $300  "
-					&& displayLine[i] != "  $500                                   $1000  ") {
+			if (displayLine[i] != "Leave  ") {
 				log.setHorizontalAlignment((int) CENTER_ALIGNMENT);
 			} else {
 				log.setHorizontalAlignment(SwingConstants.RIGHT);

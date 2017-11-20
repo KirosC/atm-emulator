@@ -38,7 +38,7 @@ public class Transfer extends Transaction {
 	private void inputTransferAccountNo() {
 		a.stepCounter = 32;
 		String[] reqOnTAccount = { "Transfer Account No.", "", "", "Leave  " };
-		a.displayScreen(reqOnTAccount, true, false);
+		a.displayScreen(reqOnTAccount, true, false, false);
 	}
 
 	private void checkAcNo() {
@@ -66,7 +66,7 @@ public class Transfer extends Transaction {
 	private void inputTransferAmt() {
 		a.stepCounter = 34;
 		String[] reqOnTAmt = { "Transfer Amount", "", "", "Leave  " };
-		a.displayScreen(reqOnTAmt, true, false);
+		a.displayScreen(reqOnTAmt, true, false, false);
 	}
 
 	void checkTransferStatus() {
@@ -124,7 +124,7 @@ public class Transfer extends Transaction {
             }
         });
 		theATMFrame.repaint();
-		a.displayScreen(msg, false, false);
+		a.displayScreen(msg, false, false, false);
 		
 		
 		t.setRepeats(false);
@@ -147,7 +147,7 @@ public class Transfer extends Transaction {
         });
 		
 		theATMFrame.repaint();
-		a.displayScreen(msg, false, false);
+		a.displayScreen(msg, false, false, false);
 		
 		t.setRepeats(false);
 		t.start();	
@@ -188,7 +188,7 @@ public class Transfer extends Transaction {
 									}
 								});
 								String[] cardReminder = {"", "", "Please take your card", ""};
-								a.displayScreen(cardReminder, false, false);
+								a.displayScreen(cardReminder, false, false, false);
 								theATMFrame.repaint();
 								timer.setRepeats(false);
 								timer.start();

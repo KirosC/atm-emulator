@@ -116,7 +116,7 @@ public class Transfer extends Transaction {
 
 	// Show message for a while and back to main menu
 	void toMainMenu(String[] msg) {
-		Timer t= new Timer(1500, new ActionListener() {
+		Timer t= new Timer(2000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	a.removeENThandler(transferHandler); // This row can delete - same line exist in toMainMenu()
             	toMainMenu();
@@ -139,7 +139,7 @@ public class Transfer extends Transaction {
 	
 	// Show message for a while and terminate
 	void terminate(String[] msg) {
-		Timer t= new Timer(5000, new ActionListener() {
+		Timer t= new Timer(2000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	terminate();
             }

@@ -37,7 +37,7 @@ public class Withdrawal extends Transaction {
 
 	void dispenseAmount() {
 		a.stepCounter = 22;
-		String[] reqOnAmt = { "", "Amount to withdraw", "", "Leave  " };
+		String[] reqOnAmt = { "Amount to withdraw", "", "", "Leave  " };
 		a.sideButton(lbtns, true);
 		a.sideButton(rbtns, false);
 		a.displayScreen(reqOnAmt, true, false);
@@ -73,7 +73,7 @@ public class Withdrawal extends Transaction {
 		// Reset step counter
 		a.stepCounter = -1;
 		// Set delay for dispensing cash
-		Timer timer = new Timer(1500, new ActionListener() {
+		Timer timer = new Timer(2000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cashDispenser.dispenseCash(amount);
@@ -92,7 +92,7 @@ public class Withdrawal extends Transaction {
 	}
 
 	void toMainMenu(String[] msg) {
-		Timer t= new Timer(3500, new ActionListener() {
+		Timer t= new Timer(2000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	toMainMenu();
             }
@@ -111,7 +111,7 @@ public class Withdrawal extends Transaction {
 	}
 	
 	void terminate(String[] msg) {
-		Timer t= new Timer(4000, new ActionListener() {
+		Timer t= new Timer(2000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	terminate();
             }

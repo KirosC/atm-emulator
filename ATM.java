@@ -142,8 +142,19 @@ public class ATM {
               break;
             case "CNL":
               if (a.stepCounter == 1 || a.stepCounter == 2) { // Typing AccountNo OR PIN
-                theATMFrame.dispose();
-                run();
+								currentAccountNo = 0;
+								Timer timer = new Timer(2000, new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent e) {
+										theATMFrame.dispose();
+										run();
+									}
+								});
+								String[] cardReminder = {"", "", "Please take your card first.", ""};
+								a.displayScreen(cardReminder, false, false);
+								theATMFrame.repaint();
+								timer.setRepeats(false);
+								timer.start();
                 // Before Authentication success, it will back to Welcome Message if user press "CNL"
               } else if (a.stepCounter >= 4) {
                 String[] t = { "", "", "Sure to exit", "" };
@@ -173,8 +184,18 @@ public class ATM {
               } else if (a.stepCounter == 5) { // Confirm EXIT
                 if (e.getSource() == lbtn[3]) {
                   currentAccountNo = 0;
-                  theATMFrame.dispose();
-                  run();
+									Timer timer = new Timer(2000, new ActionListener() {
+										@Override
+										public void actionPerformed(ActionEvent e) {
+											theATMFrame.dispose();
+											run();
+										}
+									});
+									String[] cardReminder = {"", "", "Please take your card first.", ""};
+									a.displayScreen(cardReminder, false, false);
+									theATMFrame.repaint();
+									timer.setRepeats(false);
+									timer.start();
                 } else if (e.getSource() == rbtn[3]) {
                   a.mainMenu(currentAccountNo);
                 }

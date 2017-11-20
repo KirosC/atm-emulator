@@ -148,8 +148,18 @@ public class Withdrawal extends Transaction {
             case "              ":
               if (a.stepCounter == 5) { // Confirm EXIT
                 if (e.getSource() == lbtns[3]) {
-                  theATMFrame.dispose();
-                  ATMCaseStudy.main(null);
+									Timer timer = new Timer(2000, new ActionListener() {
+										@Override
+										public void actionPerformed(ActionEvent e) {
+											theATMFrame.dispose();
+											ATMCaseStudy.main(null);
+										}
+									});
+									String[] cardReminder = {"", "", "Please take your card first.", ""};
+									a.displayScreen(cardReminder, false, false);
+									theATMFrame.repaint();
+									timer.setRepeats(false);
+									timer.start();
                 } else if (e.getSource() == rbtns[3]) {
                   theATMFrame.repaint();
                   a.mainMenu(getAccountNumber());

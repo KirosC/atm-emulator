@@ -74,10 +74,14 @@ public class Transfer extends Transaction {
 		try {
 			transferAmount = Double.parseDouble(inputValue);
 			if (transferAmount * 100 - (int) (transferAmount * 100) != 0
-					|| transferAmount > bankDatabase.getTotalBalance(userAccNum)) {
+					|| transferAmount > bankDatabase.getTotalBalance(userAccNum) || transferAmount <= 0) {
 				if (transferAmount * 100 - (int) (transferAmount * 100) != 0) {
 					// in case user input amount with 3 or more decimal place e.g. $1.521
 					String[] transactionCnl = { "", "", "Invalid Decimal Input.", "Transaction Cancelled." };
+					toMainMenu(transactionCnl);
+				} else if (transferAmount <= 0){
+					// In case user transfer amount is zero
+					String[] transactionCnl = { "", "", "Invalid Transfer Amount.", "Transaction Cancelled." };
 					toMainMenu(transactionCnl);
 				} else {
 					// in case user input amount that is larger than its account balance

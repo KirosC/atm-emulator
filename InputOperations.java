@@ -58,6 +58,10 @@ public class InputOperations extends JPanel {
 		return a;
 	}
 
+	public void clearInputCache(){
+		rText = null;
+	}
+
 	public JPanel sideButton(JButton[] sideBtn, boolean isLeft) {
 		if (isLeft) {
 			leftBtns.removeAll();

@@ -28,6 +28,7 @@ public class Withdrawal extends Transaction {
 
 	public void execute() {
 		a.stepCounter = 21;
+		a.clearInputCache();
 		inputValue = null;
 		a.sideButton(lbtns, true);
 		a.sideButton(rbtns, false);
@@ -47,6 +48,7 @@ public class Withdrawal extends Transaction {
 		a.stepCounter = 23;
 		try {
 			amount = Integer.parseInt(inputValue);
+			System.out.println(a.rText);
 			// Compare the withdrawal amount with balance
 			if (amount > super.getBankDatabase().getAvailableBalance(getAccountNumber())) {
 				String[] transactionCnl = {"", "", "Insufficient Balance.", "Transaction Cancelled."};

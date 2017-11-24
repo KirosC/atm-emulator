@@ -1,77 +1,82 @@
-
 // BalanceInquiry.java
 // Represents a balance inquiry ATM transaction
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class BalanceInquiry extends Transaction {
-	BalInqHandler biHandler = new BalInqHandler();
-	JButton[] lbtns = { createButton("              "), createButton("              "), createButton("              "), createButton("              ") };
-	JButton[] rbtns = { createButton("              "), createButton("              "), createButton("              "), createButton("              ") };
 
-	// BalanceInquiry constructor
-	public BalanceInquiry(int userAccountNumber, BankDatabase atmBankDatabase, JFrame theATMFrame, InputOperations a) {
-		super(userAccountNumber, atmBankDatabase, theATMFrame, a);
-	} // end BalanceInquiry constructor
+  BalInqHandler biHandler = new BalInqHandler();
+  JButton[] lbtns = {createButton("              "), createButton("              "),
+      createButton("              "), createButton("              ")};
+  JButton[] rbtns = {createButton("              "), createButton("              "),
+      createButton("              "), createButton("              ")};
 
-	protected JButton createButton(String buttonText) {
-		JButton btn = new JButton(buttonText);
-		btn.setFocusable(false);
-		btn.addActionListener(biHandler);
-		return btn;
-	}
+  // BalanceInquiry constructor
+  public BalanceInquiry(int userAccountNumber, BankDatabase atmBankDatabase, JFrame theATMFrame,
+      InputOperations inputOp) {
+    super(userAccountNumber, atmBankDatabase, theATMFrame, inputOp);
+  } // end BalanceInquiry constructor
 
-	// performs the transaction
-	public void execute() {
-		a.stepCounter = 11;
-		// get references to bank database and screen
-		BankDatabase bankDatabase = getBankDatabase();
+  protected JButton createButton(String buttonText) {
+    JButton btn = new JButton(buttonText);
+    btn.setFocusable(false);
+    btn.addActionListener(biHandler);
+    return btn;
+  }
 
-		// Get Account Type
+  // performs the transaction
+  public void execute() {
+    inputOp.stepCounter = 11;
+    // get references to bank database and screen
+    BankDatabase bankDatabase = getBankDatabase();
 
-		// get the available balance for the account involved
-		double availableBalance = bankDatabase.getAvailableBalance(getAccountNumber());
+    // get the available balance for the account involved
+    double availableBalance = bankDatabase.getAvailableBalance(getAccountNumber());
 
-		// get the total balance for the account involved
-		double totalBalance = bankDatabase.getTotalBalance(getAccountNumber());
+    // get the total balance for the account involved
+    double totalBalance = bankDatabase.getTotalBalance(getAccountNumber());
 
-		String[] message = { "Balance Information:", bankDatabase.getAccType(getAccountNumber())+" - "+getAccountNumber(), "Available Balance: " + Double.toString(availableBalance),
-				"Total Balance:     " + Double.toString(totalBalance) };
-		a.displayOptionScreen(message, " ", "Leave");
-		a.sideButton(lbtns, true);
-		a.sideButton(rbtns, false);
+    String[] message = {"Balance Information:",
+        bankDatabase.getAccType(getAccountNumber()) + " - " + getAccountNumber(),
+        "Available Balance: " + Double.toString(availableBalance),
+        "Total Balance:     " + Double.toString(totalBalance)};
+    inputOp.displayOptionScreen(message, " ", "Leave");
+    inputOp.sideButton(lbtns, true);
+    inputOp.sideButton(rbtns, false);
 
-	} // end method execute
+  } // end method execute
 
-	public class BalInqHandler implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (a.stepCounter != 5&&e.getSource() == rbtns[3]) {
-				theATMFrame.repaint();
-				a.mainMenu(getAccountNumber());
-			}
-			if (a.stepCounter == 5) { // Confirm EXIT
-				if (e.getSource() == lbtns[3]) {
-					Timer timer = new Timer(2000, new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							theATMFrame.dispose();
-							ATMCaseStudy.main(null);
-						}
-					});
-					String[] cardReminder = {"", "", "Please take your card.", ""};
-					a.displayScreen(cardReminder, false, false, false);
-					theATMFrame.repaint();
-					timer.setRepeats(false);
-					timer.start();
-				} else if (e.getSource() == rbtns[3]) {
-					theATMFrame.repaint();
-					a.mainMenu(getAccountNumber());
-				}
-			}
-		}
-	}
+  public class BalInqHandler implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      if (inputOp.stepCounter != 5 && e.getSource() == rbtns[3]) {
+        theATMFrame.repaint();
+        inputOp.mainMenu(getAccountNumber());
+      }
+      if (inputOp.stepCounter == 5) { // Confirm EXIT
+        if (e.getSource() == lbtns[3]) {
+          Timer timer = new Timer(2000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              theATMFrame.dispose();
+              ATMCaseStudy.main(null);
+            }
+          });
+          String[] cardReminder = {"", "", "Please take your card.", ""};
+          inputOp.displayScreen(cardReminder, false, false, false);
+          theATMFrame.repaint();
+          timer.setRepeats(false);
+          timer.start();
+        } else if (e.getSource() == rbtns[3]) {
+          theATMFrame.repaint();
+          inputOp.mainMenu(getAccountNumber());
+        }
+      }
+    }
+  }
 
 } // end class BalanceInquiry
 

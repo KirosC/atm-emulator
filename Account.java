@@ -1,69 +1,62 @@
 // Account.java
 // Represents a bank account
 
-public abstract class Account
-{
-   private int accountNumber; // account number
-   private int pin; // PIN for authentication
-   private double availableBalance; // funds available for withdrawal
-   private double totalBalance; // funds available + pending deposits
+public abstract class Account {
 
-   // Account constructor initializes attributes
-   public Account( int theAccountNumber, int thePIN,
-      double theAvailableBalance, double theTotalBalance )
-   {
-      accountNumber = theAccountNumber;
-      pin = thePIN;
-      availableBalance = theAvailableBalance;
-      totalBalance = theTotalBalance;
-   } // end Account constructor
+  private int accountNumber; // account number
+  private int pin; // PIN for authentication
+  private double availableBalance; // funds available for withdrawal
+  private double totalBalance; // funds available + pending deposits
 
-   // determines whether a user-specified PIN matches PIN in Account
-   public boolean validatePIN( int userPIN )
-   {
-      if ( userPIN == pin )
-         return true;
-      else
-         return false;
-   } // end method validatePIN
+  // Account constructor initializes attributes
+  public Account(int theAccountNumber, int thePIN,
+      double theAvailableBalance, double theTotalBalance) {
+    accountNumber = theAccountNumber;
+    pin = thePIN;
+    availableBalance = theAvailableBalance;
+    totalBalance = theTotalBalance;
+  } // end Account constructor
 
-   // returns available balance
-   public double getAvailableBalance()
-   {
-      return availableBalance;
-   } // end getAvailableBalance
+  // determines whether a user-specified PIN matches PIN in Account
+  public boolean validatePIN(int userPIN) {
+    if (userPIN == pin) {
+      return true;
+    } else {
+      return false;
+    }
+  } // end method validatePIN
 
-   // returns the total balance
-   public double getTotalBalance()
-   {
-      return totalBalance;
-   } // end method getTotalBalance
+  // returns available balance
+  public double getAvailableBalance() {
+    return availableBalance;
+  } // end getAvailableBalance
 
-   // credits an amount to the account
-   public void credit( double amount )
-   {
-      availableBalance += amount;
-      totalBalance += amount; // add to total balance
-   } // end method credit
+  // returns the total balance
+  public double getTotalBalance() {
+    return totalBalance;
+  } // end method getTotalBalance
 
-   // debits an amount from the account
-   public void debit( double amount )
-   {
-      availableBalance -= amount; // subtract from available balance
-      totalBalance -= amount; // subtract from total balance
-   } // end method debit
+  // credits an amount to the account
+  public void credit(double amount) {
+    availableBalance += amount;
+    totalBalance += amount; // add to total balance
+  } // end method credit
 
-   // returns account number
-   public int getAccountNumber()
-   {
-      return accountNumber;
-   } // end method getAccountNumber
-   
-   // New
-   // return what kind of Account it is (i.e. Current / Saving) 
-   public abstract String getAccountType(); 
+  // debits an amount from the account
+  public void debit(double amount) {
+    availableBalance -= amount; // subtract from available balance
+    totalBalance -= amount; // subtract from total balance
+  } // end method debit
+
+  // returns account number
+  public int getAccountNumber() {
+    return accountNumber;
+  } // end method getAccountNumber
+
+  // New
+  // return what kind of Account it is (i.e. Current / Saving)
+  public abstract String getAccountType();
 } // end class Account
-
 
 /**************************************************************************
  * (C) Copyright 1992-2007 by Deitel & Associates, Inc. and               *

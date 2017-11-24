@@ -1,89 +1,82 @@
 // BankDatabase.java
 // Represents the bank account information database 
 
-public class BankDatabase
-{
-   private Account accounts[]; // array of Accounts
-   
-   // no-argument BankDatabase constructor initializes accounts
-   public BankDatabase()
-   {
-      accounts = new Account[ 2 ]; // just 2 accounts for testing
-      accounts[ 0 ] = new CurrentAccount( 12345, 54321, 1000.0, 1000.0 );
-      accounts[ 1 ] = new SavingAccount( 98765, 56789, 200.0, 200.0 );
-   } // end no-argument BankDatabase constructor
-   
-   // retrieve Account object containing specified account number
-   private Account getAccount( int accountNumber )
-   {
-      // loop through accounts searching for matching account number
-      for ( Account currentAccount : accounts )
-      {
-         // return current account if match found
-         if ( currentAccount.getAccountNumber() == accountNumber )
-            return currentAccount;
-      } // end for
+public class BankDatabase {
 
-      return null; // if no matching account was found, return null
-   } // end method getAccount
+  private Account accounts[]; // array of Accounts
 
-   // determine whether user-specified account number and PIN match
-   // those of an account in the database
-   public boolean authenticateUser( int userAccountNumber, int userPIN )
-   {
-      // attempt to retrieve the account with the account number
-      Account userAccount = getAccount( userAccountNumber );
+  // no-argument BankDatabase constructor initializes accounts
+  public BankDatabase() {
+    accounts = new Account[2]; // just 2 accounts for testing
+    accounts[0] = new CurrentAccount(12345, 54321, 1000.0, 1000.0);
+    accounts[1] = new SavingAccount(98765, 56789, 200.0, 200.0);
+  } // end no-argument BankDatabase constructor
 
-      // if account exists, return result of Account method validatePIN
-      if ( userAccount != null )
-         return userAccount.validatePIN( userPIN );
-      else
-         return false; // account number not found, so return false
-   } // end method authenticateUser
+  // retrieve Account object containing specified account number
+  private Account getAccount(int accountNumber) {
+    // loop through accounts searching for matching account number
+    for (Account currentAccount : accounts) {
+      // return current account if match found
+      if (currentAccount.getAccountNumber() == accountNumber) {
+        return currentAccount;
+      }
+    } // end for
 
-   // return available balance of Account with specified account number
-   public double getAvailableBalance( int userAccountNumber )
-   {
-      return getAccount( userAccountNumber ).getAvailableBalance();
-   } // end method getAvailableBalance
+    return null; // if no matching account was found, return null
+  } // end method getAccount
 
-   // return total balance of Account with specified account number
-   public double getTotalBalance( int userAccountNumber )
-   {
-      return getAccount( userAccountNumber ).getTotalBalance();
-   } // end method getTotalBalance
+  // determine whether user-specified account number and PIN match
+  // those of an account in the database
+  public boolean authenticateUser(int userAccountNumber, int userPIN) {
+    // attempt to retrieve the account with the account number
+    Account userAccount = getAccount(userAccountNumber);
 
-   // credit an amount to Account with specified account number
-   public void credit( int userAccountNumber, double amount )
-   {
-      getAccount( userAccountNumber ).credit( amount );
-   } // end method credit
+    // if account exists, return result of Account method validatePIN
+    if (userAccount != null) {
+      return userAccount.validatePIN(userPIN);
+    } else {
+      return false; // account number not found, so return false
+    }
+  } // end method authenticateUser
 
-   // debit an amount from of Account with specified account number
-   public void debit( int userAccountNumber, double amount )
-   {
-      getAccount( userAccountNumber ).debit( amount );
-   } // end method debit
-   
-   //check if the inputed account exists or not
-   public boolean checkAccountNum( int accountNumber )	{
+  // return available balance of Account with specified account number
+  public double getAvailableBalance(int userAccountNumber) {
+    return getAccount(userAccountNumber).getAvailableBalance();
+  } // end method getAvailableBalance
 
-	  for ( Account currentAccount : accounts ){
-		  if ( currentAccount.getAccountNumber() == accountNumber )
-			  return true;
-	  } 		
-	  return false; 
-		
-	}
+  // return total balance of Account with specified account number
+  public double getTotalBalance(int userAccountNumber) {
+    return getAccount(userAccountNumber).getTotalBalance();
+  } // end method getTotalBalance
 
-   public String getAccType(int userAccountNumber){
-	   return getAccount( userAccountNumber ).getAccountType();
-   }
-   //end method checkAccountNum
-   
+  // credit an amount to Account with specified account number
+  public void credit(int userAccountNumber, double amount) {
+    getAccount(userAccountNumber).credit(amount);
+  } // end method credit
+
+  // debit an amount from of Account with specified account number
+  public void debit(int userAccountNumber, double amount) {
+    getAccount(userAccountNumber).debit(amount);
+  } // end method debit
+
+  //check if the inputed account exists or not
+  public boolean checkAccountNum(int accountNumber) {
+
+    for (Account currentAccount : accounts) {
+      if (currentAccount.getAccountNumber() == accountNumber) {
+        return true;
+      }
+    }
+    return false;
+
+  }
+
+  public String getAccType(int userAccountNumber) {
+    return getAccount(userAccountNumber).getAccountType();
+  }
+  //end method checkAccountNum
+
 } // end class BankDatabase
-
-
 
 /**************************************************************************
  * (C) Copyright 1992-2007 by Deitel & Associates, Inc. and               *

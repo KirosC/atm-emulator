@@ -4,209 +4,209 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class ATM {
-	private CashDispenser cashDispenser;
-	private BankDatabase bankDatabase;
-	private String inputValue; // When "ENT" button is pressed, what user has typed on keypad will assign to inputValue
-	InputOperations a = new InputOperations(); // Includes all GUI functions need for this ATM
-	ATMHandler atmHandler = new ATMHandler(); // ActionListener of ATM
 
-	JFrame theATMFrame = new JFrame(); // a JFrame to store the ATM JFrame, it will be called by different Transaction. 
-	JButton[] rbtn = { createButton("              "), createButton("              "), createButton("              "), createButton("              ") };
-	JButton[] lbtn = { createButton("              "), createButton("              "), createButton("              "), createButton("              ") };
-	// side buttons l = left and r = right of the ATM
-	// Use array value instead of button text as all button text are the same
+  private final int NORMAL = 1000;
+  private final int INV_INPUT = 1001;
+  private final int AUTH_FAIL = 1002;
+  public boolean buttonSwitch = true;
+  InputOperations inputOp = new InputOperations(); // Includes all GUI functions need for this ATM
+  ATMHandler atmHandler = new ATMHandler(); // ActionListener of ATM
+  JFrame theATMFrame = new JFrame(); // a JFrame to store the ATM JFrame, it will be called by different Transaction.
+  JButton[] rbtn = {createButton("              "), createButton("              "),
+      createButton("              "), createButton("              ")};
+  // side buttons l = left and r = right of the ATM
+  // Use array value instead of button text as all button text are the same
+  JButton[] lbtn = {createButton("              "), createButton("              "),
+      createButton("              "), createButton("              ")};
+  JButton enter = createButton("ENT");
+  // Different from Other Keys on the keypad, "ENT" and "CNL" performs different functions in different situation (controlled by stepCounter)
+  // "CNL" = EXIT function after authentication success
+  JButton cancel = createButton("CNL");
+  Transaction temp;
+  int accountNo = 0;
+  int pin = 0;
+  private CashDispenser cashDispenser;
+  private BankDatabase bankDatabase;
+  private String inputValue; // When "ENT" button is pressed, what user has typed on keypad will assign to inputValue
+  private int currentAccountNo;
 
-	JButton enter = createButton("ENT");
-	JButton cancel = createButton("CNL");
-	// Different from Other Keys on the keypad, "ENT" and "CNL" performs different functions in different situation (controlled by stepCounter)
-	// "CNL" = EXIT function after authentication success
+  public ATM(BankDatabase theBankDatabase, CashDispenser theCashDispenser) {
+    bankDatabase = theBankDatabase;
+    cashDispenser = theCashDispenser;
+  }
 
-	Transaction temp;
+  // create Button having atmHandler
+  protected JButton createButton(String buttonText) {
+    JButton btn = new JButton(buttonText);
+    btn.setFocusable(false);
+    btn.addActionListener(atmHandler);
+    return btn;
+  }
 
-	private int currentAccountNo;
-	private final int NORMAL = 1000;
-	private final int INV_INPUT = 1001;
-	private final int AUTH_FAIL = 1002;
-	int accountNo = 0;
-	int pin = 0;
-	public boolean buttonSwitch = true;
+  public void run() {
+    theATMFrame.dispose();
+    inputOp.stepCounter = 0;
+    currentAccountNo = 0;
+    inputOp.setSideBtnArr(lbtn, rbtn);
+    String[] t = {"", "", "Welcome to the ATM System", "Press ENT to continue."};
+    theATMFrame = inputOp.mainFrame(enter, cancel, t, lbtn, rbtn);
+    theATMFrame.toFront();
+  }
 
-	// create Button having atmHandler
-	protected JButton createButton(String buttonText) {
-		JButton btn = new JButton(buttonText);
-		btn.setFocusable(false);
-		btn.addActionListener(atmHandler);
-		return btn;
-	}
+  void enterAccountNo(int displayMode) {
+    inputOp.stepCounter = 1;
+    String[] t = {"", "Please enter your Account No.", "", ""};
 
-	public ATM(BankDatabase theBankDatabase, CashDispenser theCashDispenser) {
-		bankDatabase = theBankDatabase;
-		cashDispenser = theCashDispenser;
-	}
+    switch (displayMode) {
+      case INV_INPUT: {
+        // t[1] = "Invalid input";
+        // t[2] = "Please re-enter your Account No.";
+        t[2] = "Invalid input";
+        t[3] = "Please try again";
+        break;
+      }
+      case AUTH_FAIL: {
+        // t[1] = "Authentication Failed.";
+        // t[2] = "Please re-enter your Account No.";
+        t[2] = "Authentication Failed";
+        break;
+      }
+      default:
+    }
+    inputOp.displayScreen(t, true, false, false);
+  }
 
-	public void run() {
-		theATMFrame.dispose();
-		a.stepCounter = 0;
-		currentAccountNo = 0;
-		a.setSideBtnArr(lbtn, rbtn);
-		String[] t = { "","","Welcome to the ATM System", "Press ENT to continue." };
-		theATMFrame = a.mainFrame(enter, cancel, t, lbtn, rbtn);
-		theATMFrame.toFront();
-	}
+  void enterPassword() {
+    inputOp.stepCounter = 2;
+    try {
+      accountNo = Integer.parseInt(inputValue);
+      String[] t = {"", "Please enter PIN Code", "", ""};
+      inputOp.displayScreen(t, false, true, false);
+    } catch (Exception e) {
+      System.out.println("Fail to change Integer Value."); // Remove this line
+      enterAccountNo(INV_INPUT);
+    }
+  }
 
-	void enterAccountNo(int displayMode) {
-		a.stepCounter = 1;
-		String[] t = { "","Please enter your Account No.", "", "" };
+  void authentication() {
+    inputOp.stepCounter = 3;
+    try {
+      pin = Integer.parseInt(inputValue);
+      if (bankDatabase.authenticateUser(accountNo, pin)) {
+        currentAccountNo = accountNo;
+        performTransactions();
+      } else {
+        System.out.println("Authentication Failed.");  // Remove this line
+        enterAccountNo(AUTH_FAIL);
+      }
+    } catch (Exception e) {
+      System.out.println("Fail to change Integer Value.");  // Remove this line
+      enterAccountNo(INV_INPUT);
+    }
+  }
 
-		switch (displayMode){
-			case INV_INPUT:{
-				// t[1] = "Invalid input";
-				// t[2] = "Please re-enter your Account No.";
-				t[2] = "Invalid input";
-				t[3] = "Please try again";
-				break;
-			}
-			case AUTH_FAIL:{
-				// t[1] = "Authentication Failed.";
-				// t[2] = "Please re-enter your Account No.";
-				t[2] = "Authentication Failed";
-				break;
-			}
-			default:
-		}
-		a.displayScreen(t, true, false, false);
-	}
+  void performTransactions() {  // show mainMenu
+    inputOp.stepCounter = 4;
+    inputOp.mainMenu(currentAccountNo);
+  }
 
-	void enterPassword() {
-		// allow retry ?
-		a.stepCounter = 2;
-		try {
-			accountNo = Integer.parseInt(inputValue);
-			String[] t = { "","Please enter PIN Code", "", "" };
-			a.displayScreen(t, false, true, false);
-		} catch (Exception e) {
-			System.out.println("Fail to change Integer Value.");
-			enterAccountNo(INV_INPUT);
-		}
-	}
+  void executeTransaction() {
+    temp.execute();
+  }
 
-	void authentication() {
-		a.stepCounter = 3;
-		try {
-			pin = Integer.parseInt(inputValue);
-			if (bankDatabase.authenticateUser(accountNo, pin)) {
-				currentAccountNo = accountNo;
-				performTransactions();
-			} else {
-				System.out.println("Authentication Failed.");
-				enterAccountNo(AUTH_FAIL);
-			}
-		} catch (Exception e) {
-			System.out.println("Fail to change Integer Value.");
-			enterAccountNo(INV_INPUT);
-		}
-	}
+  public class ATMHandler implements ActionListener {
 
-	void performTransactions() {	// show mainMenu
-		a.stepCounter = 4;
-		a.mainMenu(currentAccountNo);
-	}
-
-	void executeTransaction() {
-		temp.execute();
-	}
-
-	public class ATMHandler implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-				Object source = e.getSource();
-				if (source instanceof JButton) {
-          JButton btn = (JButton) source;
-          try {
-            switch (btn.getText()) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      Object source = e.getSource();
+      if (source instanceof JButton) {
+        JButton btn = (JButton) source;
+        try {
+          switch (btn.getText()) {
             case "ENT":
-              if (a.stepCounter == 0) {
+              if (inputOp.stepCounter == 0) {
                 enterAccountNo(NORMAL);
-              } else if (a.stepCounter == 1) {
-                inputValue = a.rText;
-                a.textField = null;
+              } else if (inputOp.stepCounter == 1) {
+                inputValue = inputOp.rText;
+                inputOp.textField = null;
                 enterPassword();
-              } else if (a.stepCounter == 2) {
-                inputValue = a.rText;
-                a.passwordField = null;
+              } else if (inputOp.stepCounter == 2) {
+                inputValue = inputOp.rText;
+                inputOp.passwordField = null;
                 authentication();
               }
               break;
             case "CNL":
-              if (a.stepCounter == 1 || a.stepCounter == 2) { // Typing AccountNo OR PIN
-								currentAccountNo = 0;
-								Timer timer = new Timer(2000, new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent e) {
-										theATMFrame.dispose();
-										run();
-										theATMFrame.toFront();
-									}
-								});
-								String[] cardReminder = {"", "", "Please take your card.", ""};
-								a.displayScreen(cardReminder, false, false, false);
-								theATMFrame.repaint();
-								timer.setRepeats(false);
-								timer.start();
+              if (inputOp.stepCounter == 1 || inputOp.stepCounter == 2) { // Typing AccountNo OR PIN
+                currentAccountNo = 0;
+                Timer timer = new Timer(2000, new ActionListener() {
+                  @Override
+                  public void actionPerformed(ActionEvent e) {
+                    theATMFrame.dispose();
+                    run();
+                    theATMFrame.toFront();
+                  }
+                });
+                String[] cardReminder = {"", "", "Please take your card.", ""};
+                inputOp.displayScreen(cardReminder, false, false, false);
+                theATMFrame.repaint();
+                timer.setRepeats(false);
+                timer.start();
                 // Before Authentication success, it will back to Welcome Message if user press "CNL"
-              } else if (a.stepCounter >= 4) {
-                String[] t = { "", "", "Sure to exit", "" };
-                a.displayOptionScreen(t, "Yes", "No");
-                a.stepCounter = 5;
+              } else if (inputOp.stepCounter >= 4) {
+                String[] t = {"", "", "Sure to exit", ""};
+                inputOp.displayOptionScreen(t, "Yes", "No");
+                inputOp.stepCounter = 5;
               }
               break;
             case "              ":
-              if (a.stepCounter == 4) { // Main Menu
+              if (inputOp.stepCounter == 4) { // Main Menu
                 if (e.getSource() == lbtn[0]) {
-                  temp = new BalanceInquiry(currentAccountNo, bankDatabase, theATMFrame, a);
-                  a.stepCounter = 11;
+                  temp = new BalanceInquiry(currentAccountNo, bankDatabase, theATMFrame, inputOp);
+                  inputOp.stepCounter = 11;
                   executeTransaction();
                 } else if (e.getSource() == lbtn[1]) {
-                  temp = new Withdrawal(currentAccountNo, bankDatabase, cashDispenser, theATMFrame,a);
-                  a.stepCounter = 21;
+                  temp = new Withdrawal(currentAccountNo, bankDatabase, cashDispenser, theATMFrame,
+                      inputOp);
+                  inputOp.stepCounter = 21;
                   executeTransaction();
                 } else if (e.getSource() == lbtn[2]) {
-                  temp = new Transfer(currentAccountNo, bankDatabase, theATMFrame, a);
-                  a.stepCounter = 31;
+                  temp = new Transfer(currentAccountNo, bankDatabase, theATMFrame, inputOp);
+                  inputOp.stepCounter = 31;
                   executeTransaction();
                 } else if (e.getSource() == lbtn[3]) {
-                  String[] t = { "", "", "Sure to exit", "" };
-                  a.displayOptionScreen(t, "Yes", "No");
-                  a.stepCounter++;
+                  String[] t = {"", "", "Sure to exit", ""};
+                  inputOp.displayOptionScreen(t, "Yes", "No");
+                  inputOp.stepCounter++;
                 }
-              } else if (a.stepCounter == 5) { // Confirm EXIT
+              } else if (inputOp.stepCounter == 5) { // Confirm EXIT
                 if (e.getSource() == lbtn[3]) {
-									// Reset step counter
-									a.stepCounter = -1;
+                  // Reset step counter
+                  inputOp.stepCounter = -1;
                   currentAccountNo = 0;
-									Timer timer = new Timer(2000, new ActionListener() {
-										@Override
-										public void actionPerformed(ActionEvent e) {
-											theATMFrame.dispose();
-											run();
-											theATMFrame.toFront();
-										}
-									});
-									String[] cardReminder = {"", "", "Please take your card.", ""};
-									a.displayScreen(cardReminder, false, false, false);
-									theATMFrame.repaint();
-									timer.setRepeats(false);
-									timer.start();
+                  Timer timer = new Timer(2000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                      theATMFrame.dispose();
+                      run();
+                      theATMFrame.toFront();
+                    }
+                  });
+                  String[] cardReminder = {"", "", "Please take your card.", ""};
+                  inputOp.displayScreen(cardReminder, false, false, false);
+                  theATMFrame.repaint();
+                  timer.setRepeats(false);
+                  timer.start();
                 } else if (e.getSource() == rbtn[3]) {
-                  a.mainMenu(currentAccountNo);
+                  inputOp.mainMenu(currentAccountNo);
                 }
               }
               break;
-            }
-          } catch (Exception exp) {
-            exp.printStackTrace();
           }
+        } catch (Exception exp) {
+          exp.printStackTrace();
         }
-		}
-	}
+      }
+    }
+  }
 }

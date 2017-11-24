@@ -4,32 +4,33 @@ import javax.swing.JFrame;
 // Abstract superclass Transaction represents an ATM transaction
 
 public abstract class Transaction {
-	protected InputOperations a;
-	private int accountNumber; // indicates account involved
-	private BankDatabase bankDatabase; // account info database
-	protected JFrame theATMFrame;
 
-	// Transaction constructor invoked by subclasses using super()
-	public Transaction(int userAccountNumber, BankDatabase atmBankDatabase, JFrame theATM,
-			InputOperations atmOpr) {
-		accountNumber = userAccountNumber;
-		bankDatabase = atmBankDatabase;
-		theATMFrame = theATM;
-		a = atmOpr;
-	} // end Transaction constructor
+  protected InputOperations inputOp;
+  protected JFrame theATMFrame;
+  private int accountNumber; // indicates account involved
+  private BankDatabase bankDatabase; // account info database
 
-	// return account number
-	public int getAccountNumber() {
-		return accountNumber;
-	} // end method getAccountNumber
+  // Transaction constructor invoked by subclasses using super()
+  public Transaction(int userAccountNumber, BankDatabase atmBankDatabase, JFrame theATM,
+      InputOperations atmOpr) {
+    accountNumber = userAccountNumber;
+    bankDatabase = atmBankDatabase;
+    theATMFrame = theATM;
+    inputOp = atmOpr;
+  } // end Transaction constructor
 
-	// return reference to bank database
-	public BankDatabase getBankDatabase() {
-		return bankDatabase;
-	} // end method getBankDatabase
+  // return account number
+  public int getAccountNumber() {
+    return accountNumber;
+  } // end method getAccountNumber
 
-	// perform the transaction (overridden by each subclass)
-	abstract public void execute();
+  // return reference to bank database
+  public BankDatabase getBankDatabase() {
+    return bankDatabase;
+  } // end method getBankDatabase
+
+  // perform the transaction (overridden by each subclass)
+  abstract public void execute();
 } // end class Transaction
 
 /**************************************************************************

@@ -45,7 +45,7 @@ java ATMCaseStudy
 
 * **Kiros Choi** - *Initial work* - [KirosC](https://github.com/KirosC)
 
-## Acknowledgment
+## Acknowledgement
 
 Base on the command line version ATM of
 
